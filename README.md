@@ -1,4 +1,8 @@
 # MobiDeep
+
+
+![image](https://github.com/user-attachments/assets/0c1280ba-074a-4b9e-925c-85444c6b6241)
+
 An AI-based Metascore for Robust and Scalable Prioritization of Non-Coding Variants in Whole-Genome Sequencing Data
 
 Command-line tool that annotates non coding variants from a VCF file and predicts their pathogenicity using MobiDeep a pre-trained Multi-Layer Perceptron (MLP) model.
