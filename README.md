@@ -3,62 +3,70 @@
 
 ![image](https://github.com/user-attachments/assets/0c1280ba-074a-4b9e-925c-85444c6b6241)
 
+
 An AI-based Metascore for Robust and Scalable Prioritization of Non-Coding Variants in Whole-Genome Sequencing Data
 
-Command-line tool that annotates non coding variants from a VCF file and predicts their pathogenicity using MobiDeep a pre-trained Multi-Layer Perceptron (MLP) model.
+MobiDeep is a metascore for non-coding variants (SNVs only) based on a multilayer perceptron using 5 features: ReMM v.0.4, CADD 1.7, GPN-MSA, and two conservation scores (Cactus 241-way vertebrates and PhyloP primates) to capture different evolutionary depths.
 
-The entire workflow is packaged within an Apptainer (formerly Singularity) container, ensuring complete reproducibility, ease of use, and eliminating complex setup procedures. You can run this tool on any Linux system with Apptainer installed, including High-Performance Computing (HPC) clusters.
+**🌐 Try MobiDeep Online**: MobiDeep is now integrated into the [MobiDetails web application](https://mobidetails.chu-montpellier.fr) for easy variant analysis without any setup required.
 
-## Features
+## Scoring System
 
-Standard VCF Input: Directly processes standard VCF files for analysis, in hg38/GRCH38
+- **Raw score**: 0 = benign, 1 = maximum pathogenicity
+- **Log score**: logarithmic transformation using the formula: `log_score = -log10(1 - raw_score)`
 
-Comprehensive Annotation: Enriches variants with scores from top performing VEPs:
+### MobiDeep Thresholds
 
-- CADD (v1.7)
-- GPN-MSA
-- ReMM (v.0.4)
-- phyloP (cactus241way)
-- phyloP (phyloP Primates)
-- MobiDeep: our model pathogenicity score (MobiDeep_Score).
+| Classification | Raw score | Log score |
+|----------------|-----------|-----------|
+| Neutral | < 0.6 | < 0.3979 |
+| Likely deleterious | > 0.6 | > 0.3979 |
+| High confidence deleteriousness | > 0.9684 | > 1.5 |
 
-Customizable Threshold: Classifies variants as "Pathogenic" or "Neutral" based on a user-defined threshold (you can use 0.6 by default or region specific threshold).
-Portable & Reproducible: Distributed as a single Apptainer (.sif) file. No need to install Python, scikit-learn, or any other dependencies.
+**Usage recommendation**: Use the orange threshold (0.6) for general pathogenicity prediction and the red threshold (0.9684) for high confidence deleteriousness assessment. Region-specific thresholds are available in the MobiDetails web interface.
 
+## Available Resources
 
-## Requirements
+### 1. Web Application (Recommended for Single Variants)
+Visit [MobiDetails](https://mobidetails.chu-montpellier.fr) to:
+- Score individual variants instantly
+- Access region-specific thresholds with radar view visualization
+- View comprehensive variant annotations including MobiDeep scores
 
-Apptainer (or Singularity version 3.5+) installed. See the Apptainer Installation Guide.
+### 2. Command-Line Tool (For Batch Processing)
+Process VCF files locally using our Apptainer container for:
+- Batch analysis of multiple variants
+- Integration into bioinformatics pipelines
+- Offline processing
 
-A Linux/macOS environment.
+### 3. Precalculated Genome-Wide Dataset
+**Coming Soon**: Access precalculated MobiDeep scores for all possible SNVs in the human genome (hg38) through our download portal.
 
-The required annotation data files (see Data Setup section below).
+## Command-Line Tool Setup
 
-## Setup
-1. Obtain the Container
+### Requirements
+- Apptainer (or Singularity version 3.5+) installed. See the [Apptainer Installation Guide](https://apptainer.org/docs/user/main/quick_start.html#quick-installation-steps).
+- A Linux/macOS environment
+- Annotation data files (see Data Setup section below)
 
-Download the ready-to-use container file, mobideep.sif, from this repository.
+### 1. Obtain the Container
+Download the ready-to-use container file, `mobideep.sif`, from this repository.
 
-(Alternatively, for developers, you can build it from source by cloning the repository and running apptainer build --fakeroot mobideep.sif mobideep.def)
+### 2. Download Annotation Data
+MobiDeep requires several large annotation data files. **All required files are available for download through the [MobiDetails download page](https://mobidetails.chu-montpellier.fr/about)**.
 
-2. Download and Organize Annotation Data
+#### Required Files and Organization
 
-MobiDeep requires several large annotation data files. These can be downloaded either from their official sources, or from Mobidetails download page https://mobidetails.chu-montpellier.fr/about and organized in a single directory.
+| Database | Expected Filename | Version |
+|----------|-------------------|---------|
+| CADD (SNVs) | whole_genome_SNVs.tsv.gz | v1.7 |
+| CADD (Indels) | gnomad.genomes.r4.0.indel.tsv.gz | v1.7 |
+| GPN-MSA | scores.tsv.bgz | - |
+| ReMM | ReMM_v0.4.hg38.tsv.gz | v0.4 |
+| PhyloP (241-way) | cactus241way.phyloP.bw | - |
+| PhyloP (Primates) | phyloPPrimates.bigWig | - |
 
-
-
-If annotation files are downloaded from their official sources, please ensure you download the versions specified below and place them in a single directory. The filenames must match exactly.
-
-Database	Expected Filename	Version
-CADD (SNVs)	whole_genome_SNVs.tsv.gz	v1.7
-CADD (Indels)	gnomad.genomes.r4.0.indel.tsv.gz	v1.7
-GPN-MSA	scores.tsv.bgz	-
-ReMM	ReMM_v0.4.hg38.tsv.gz	v0.4
-PhyloP (241-way)	cactus241way.phyloP.bw	-
-PhyloP (Primates)	phyloPPrimates.bigWig	-
-
-Your data directory must be structured as follows:
-
+**Directory Structure:**
 ```bash
 /path/to/your/annotation_data/
 ├── whole_genome_SNVs.tsv.gz
@@ -73,33 +81,22 @@ Your data directory must be structured as follows:
 └── phyloPPrimates.bigWig
 ```
 
-Important: Ensure that all gzipped files (.gz, .bgz) are indexed with Tabix. The index files (.tbi) should be in the same directory.
+**Important**: Ensure that all gzipped files (.gz, .bgz) are indexed with Tabix. The index files (.tbi) should be in the same directory.
 
 ## Usage
 
-The tool is executed via the apptainer run command. You must provide the paths to your VCF file, the annotation data directory, and an output file.
-
 ### Command-Line Arguments
-```simple text in table
-Argument	Description	Required
---vcf	Path to the input VCF file to be scored.	Yes
---data_dir	Path to the directory containing all annotation data files.	Yes
---output_file	Path where the output TSV file will be saved.	Yes
---threshold	The probability score threshold to classify a variant as "Pathogenic".	No (Default: 0.6)
-```
 
-### Example Workflow
+| Argument | Description | Required |
+|----------|-------------|----------|
+| `--vcf` | Path to the input VCF file to be scored (hg38/GRCh38) | Yes |
+| `--data_dir` | Path to the directory containing all annotation data files | Yes |
+| `--output_file` | Path where the output TSV file will be saved | Yes |
+| `--threshold` | The probability score threshold to classify a variant as "Pathogenic" | No (Default: 0.6) |
 
-Let's assume:
+### Example Commands
 
-The mobideep.sif container is in your current directory.
-
-Your annotation files are located at /data/annotations/.
-
-Your VCF file is at /data/variants/input.vcf.
-
-### bCommand:
-
+**Basic usage with default threshold (0.6):**
 ```bash
 # Define paths for clarity
 ANNOTATION_DIR="/data/annotations"
@@ -109,54 +106,67 @@ VARIANT_DIR="/data/variants"
 apptainer run \
     --bind ${ANNOTATION_DIR}:/annotations \
     --bind ${VARIANT_DIR}:/variants \
-    # alternavely, you can use :  --bind ${HOST_PATH}:{HOST_PATH} if you prefer, after assign HOST_PATH=$(pwd)
     mobideep.sif \
     --vcf /variants/input.vcf \
     --data_dir /annotations \
     --output_file /variants/results.tsv
 ```
 
-
-### To use a different threshold (e.g., 0.85 for non coding exons):
-
+**High confidence analysis (threshold 0.9684):**
 ```bash
 apptainer run \
     --bind ${ANNOTATION_DIR}:/annotations \
     --bind ${VARIANT_DIR}:/variants \
-    # alternavely, you can use :  --bind ${HOST_PATH}:{HOST_PATH} if you prefer, after assign HOST_PATH=$(pwd)
     mobideep.sif \
     --vcf /variants/input.vcf \
     --data_dir /annotations \
-    --output_file /variants/results_t0.85.tsv \
-    --threshold 0.85
+    --output_file /variants/results_high_confidence.tsv \
+    --threshold 0.9684
 ```
 
-
-
-## Explanation of the --bind Flag
-
-The --bind flag makes directories from your computer (the "host") visible inside the container.
-
---bind ${ANNOTATION_DIR}:/annotations: Mounts your annotation data to the /annotations path inside the container.
-
---bind ${VARIANT_DIR}:/variants: Mounts your VCF directory to /variants. This is also where the output will be written.
+### Explanation of the --bind Flag
+The `--bind` flag makes directories from your computer (the "host") visible inside the container:
+- `--bind ${ANNOTATION_DIR}:/annotations`: Mounts your annotation data to the `/annotations` path inside the container
+- `--bind ${VARIANT_DIR}:/variants`: Mounts your VCF directory to `/variants` (also where output will be written)
 
 ## Output Format
 
-The output is a tab-separated file (.tsv) containing the original variant information along with the collected annotation scores and the final MobiDeep predictions.
+The output is a tab-separated file (.tsv) containing the original variant information along with annotation scores and MobiDeep predictions:
 
+```
 #CHROM	POS	ID	REF	ALT	CADD_PHRED	...	MobiDeep_Score	MobiDeep_Class
 1	55040253	rs12345	C	T	14.8900	...	0.9543	Pathogenic
 10	114221763	.	A	G	5.4321	...	0.0210	Neutral
+```
 
-- MobiDeep_Score: The raw probability score from the MLP model (0 to 1).
-- MobiDeep_Class: "Pathogenic" or "Neutral", based on whether the MobiDeep_Score is above or below the specified --threshold.
+- **MobiDeep_Score**: The raw probability score from the MLP model (0 to 1)
+- **MobiDeep_Class**: "Pathogenic" or "Neutral", based on whether the MobiDeep_Score is above or below the specified `--threshold`
 
-# Citation
+## Features
 
-If you use MobiDeep in your research, please cite the MobiDeep project.
-(BOUAZZAOUI ET AL. BLABLA)
+- **Standard VCF Input**: Directly processes standard VCF files (hg38/GRCh38)
+- **Comprehensive Annotation**: Enriches variants with scores from top-performing predictors:
+  - CADD (v1.7)
+  - GPN-MSA
+  - ReMM (v0.4)
+  - phyloP (cactus241way)
+  - phyloP (phyloP Primates)
+  - MobiDeep pathogenicity score
+- **Flexible Thresholds**: Multiple classification thresholds for different confidence levels
+- **Portable & Reproducible**: Distributed as a single Apptainer (.sif) file
+- **Web Integration**: Also available through the MobiDetails web interface
 
-# License
+## Citation
+
+If you use MobiDeep in your research, please cite:
+(BOUAZZAOUI ET AL. - Citation details to be updated)
+
+## License
 
 This project is licensed under the GPL v3 License. See the LICENSE file for details.
+
+## Support
+
+For questions or issues:
+- Web application support: Visit [MobiDetails](https://mobidetails.chu-montpellier.fr)
+- Command-line tool issues: Open an issue in this repository
