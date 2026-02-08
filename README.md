@@ -40,7 +40,7 @@ Process VCF files locally using our Apptainer container for:
 - Offline processing
 
 ### 3. Precalculated Genome-Wide Dataset
-**Coming Soon**: Access precalculated MobiDeep scores for all possible SNVs in the human genome (hg38) through our download portal.
+Download pre-computed dataset of MobiDeep scores for 8,.773 billion single nucleotide variants covering 94.7% of all genomic positions across the GRCh38p14 reference genome. through our download portal: https://mobidetails.chu-montpellier.fr/about
 
 ## Command-Line Tool Setup
 
