@@ -35,7 +35,7 @@ Visit [MobiDetails](https://mobidetails.chu-montpellier.fr) to:
 
 ### 2. The MobiDeep model (joblib format)
 
-Download the model file, `mobideep_20250520.joblib`, from the [MobiDetails website](https://mobidetails.chu-montpellier.fr/static/resources/mobideep/mobideep.sif).
+Download the model file, `mobideep_20250520.joblib`, from the [MobiDetails website](https://mobidetails.chu-montpellier.fr/static/resources/mobideep/mobideep_20250520.joblib).
 
 ### 3. Command-Line Tool (For Batch Processing)
 Process VCF files locally using our Apptainer container for:
