@@ -23,7 +23,7 @@ MobiDeep is a metascore for non-coding variants (SNVs only) based on a multilaye
 | Likely deleterious | > 0.6 | > 0.3979 |
 | High confidence deleteriousness | > 0.9684 | > 1.5 |
 
-**Usage recommendation**: Use the orange threshold (0.6) for general pathogenicity prediction and the red threshold (0.9684) for high confidence deleteriousness assessment. Region-specific thresholds are available in the MobiDetails web interface.
+**Usage recommendation**: Use the Likely deleterious threshold (0.6) for general pathogenicity prediction and the high confidence threshold (0.9684) if you require a high positive predictive value. Region-specific thresholds are available in the MobiDetails web interface.
 
 ## Available Resources
 
