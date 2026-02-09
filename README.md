@@ -100,11 +100,23 @@ MobiDeep requires several large annotation data files. You can download them fro
 
 ### Example Commands
 
+**Test the container**
+```bash
+# Define paths for clarity
+ANNOTATION_DIR="/data/annotations" # replace with your own path
+apptainer run \
+    --bind ${ANNOTATION_DIR}:/annotations \
+    mobideep.sif \
+    --vcf test_variants.vcf \
+    --data_dir /annotations \
+    --output_file /variants/results.tsv
+```
+
 **Basic usage with default threshold (0.6):**
 ```bash
 # Define paths for clarity
-ANNOTATION_DIR="/data/annotations"
-VARIANT_DIR="/data/variants"
+ANNOTATION_DIR="/data/annotations" # replace with your own path
+VARIANT_DIR="/data/variants" # replace with your own path
 
 # Run the container
 apptainer run \
