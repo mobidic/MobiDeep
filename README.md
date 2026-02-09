@@ -75,7 +75,7 @@ MobiDeep requires several large annotation data files. You can download them fro
 | [GPN-MSA](https://huggingface.co/datasets/songlab/gpn-msa-hg38-scores) | scores.tsv.bgz | - |
 | [ReMM](https://remm.bihealth.org/score) | ReMM_v0.4.hg38.tsv.gz | v0.4 |
 | [PhyloP](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/cactus241way/) (241-way) | cactus241way.phyloP.bw | - |
-| PhyloP (Primates) | phyloPPrimates.bigWig | - |
+| [PhyloP (Primates)](https://cgl.gi.ucsc.edu/data/cactus/zoonomia-2021-track-hub/hg38/phyloPPrimates.bigWig) | phyloPPrimates.bigWig | - |
 
 **Directory Structure:**
 ```bash
