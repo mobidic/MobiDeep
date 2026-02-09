@@ -70,11 +70,11 @@ MobiDeep requires several large annotation data files. You can download them fro
 
 | Database | Expected Filename | Version |
 |----------|-------------------|---------|
-| CADD (SNVs) | whole_genome_SNVs.tsv.gz | v1.7 |
-| CADD (Indels) | gnomad.genomes.r4.0.indel.tsv.gz | v1.7 |
-| GPN-MSA | scores.tsv.bgz | - |
-| ReMM | ReMM_v0.4.hg38.tsv.gz | v0.4 |
-| PhyloP (241-way) | cactus241way.phyloP.bw | - |
+| [CADD (SNVs)](https://cadd.gs.washington.edu/download) | whole_genome_SNVs.tsv.gz | v1.7 |
+| [CADD (Indels)](https://cadd.gs.washington.edu/download) | gnomad.genomes.r4.0.indel.tsv.gz | v1.7 |
+| [GPN-MSA](https://huggingface.co/datasets/songlab/gpn-msa-hg38-scores) | scores.tsv.bgz | - |
+| [ReMM](https://remm.bihealth.org/score) | ReMM_v0.4.hg38.tsv.gz | v0.4 |
+| [PhyloP](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/cactus241way/) (241-way) | cactus241way.phyloP.bw | - |
 | PhyloP (Primates) | phyloPPrimates.bigWig | - |
 
 **Directory Structure:**
