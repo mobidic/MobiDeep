@@ -33,13 +33,17 @@ Visit [MobiDetails](https://mobidetails.chu-montpellier.fr) to:
 - Access region-specific thresholds with radar view visualization
 - View comprehensive variant annotations including MobiDeep scores
 
-### 2. Command-Line Tool (For Batch Processing)
+### 2. The MobiDeep model (joblib format)
+
+Download the model file, `mobideep_20250520.joblib`, from the [MobiDetails website](https://mobidetails.chu-montpellier.fr/static/resources/mobideep/mobideep.sif).
+
+### 3. Command-Line Tool (For Batch Processing)
 Process VCF files locally using our Apptainer container for:
 - Batch analysis of multiple variants
 - Integration into bioinformatics pipelines
 - Offline processing
 
-### 3. Precalculated Genome-Wide Dataset
+### 4. Precalculated Genome-Wide Dataset
 Download pre-computed dataset of MobiDeep scores for 8,.773 billion single nucleotide variants covering 94.7% of all genomic positions across the GRCh38p14 reference genome. through our download portal: https://mobidetails.chu-montpellier.fr/about
 
 ## Command-Line Tool Setup
@@ -50,10 +54,10 @@ Download pre-computed dataset of MobiDeep scores for 8,.773 billion single nucle
 - Annotation data files (see Data Setup section below)
 
 ### 1. Obtain the Container
-Download the ready-to-use container file, `mobideep.sif`, from this repository.
+Download the ready-to-use container file, `mobideep.sif`, from the [MobiDetails website](https://mobidetails.chu-montpellier.fr/static/resources/mobideep/mobideep.sif).
 
 ### 2. Download Annotation Data
-MobiDeep requires several large annotation data files. **All required files are available for download through the [MobiDetails download page](https://mobidetails.chu-montpellier.fr/about)**.
+MobiDeep requires several large annotation data files. You can download them from the appropriate websites.
 
 #### Required Files and Organization
 
