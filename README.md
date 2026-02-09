@@ -56,7 +56,7 @@ Download pre-computed dataset of MobiDeep scores for 8,.773 billion single nucle
 ### 1. Obtain the Container
 Download the ready-to-use container file, `mobideep.sif`, from the [MobiDetails website](https://mobidetails.chu-montpellier.fr/static/resources/mobideep/mobideep.sif).
 
-Otherwise you can rebuild it using the mobideep.def apptainer definitio file.
+Otherwise you can rebuild it using the mobideep.def apptainer definition file.
 
 ```bash
 apptainer build mobideep.sif mobideep.def
