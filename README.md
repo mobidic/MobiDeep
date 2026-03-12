@@ -182,7 +182,7 @@ The output is a tab-separated file (.tsv) containing the original variant inform
 ## Citation
 
 If you use MobiDeep in your research, please cite:
-(BOUAZZAOUI ET AL. - Citation details to be updated)
+(Bouazzaoui et al., 2026 - https://doi.org/10.21203/rs.3.rs-8823759/v1)
 
 ## License
 
